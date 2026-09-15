@@ -2,8 +2,9 @@
 
 namespace App\Doctrine\DataFixtures;
 
-use App\Model\Entity\User;
 use App\Model\Entity\Review;
+use App\Model\Entity\Tag;
+use App\Model\Entity\User;
 use App\Model\Entity\VideoGame;
 use App\Rating\CalculateAverageRating;
 use App\Rating\CountRatingsPerValue;
@@ -26,6 +27,11 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
 
     public function load(ObjectManager $manager): void
     {
+        $tagValues = ['Action', 'Adventure', 'RPG', 'Strategy',
+                    'Simulation', 'Sports', 'Puzzle', 'Horror',
+                    'Shooter', 'Platformer', 'Fighting', 'MMO',
+                    'Music', 'TCG', 'Sandbox', 'Stealth'];
+
         // fixed seed to keep data consistent
         mt_srand(99);
         $this->faker->seed(99);
@@ -42,12 +48,22 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
             ->setImageName(sprintf('video_game_%d.png', $index))
             ->setImageSize(2_098_872)
         );
-
-        // TODO : Ajouter les tags aux vidéos
-
         array_walk($videoGames, [$manager, 'persist']);
 
-        $manager->flush();
+        $tags = array_fill_callback(0, count($tagValues), fn (int $index): Tag => (new Tag)
+            ->setName($tagValues[$index])
+        );
+        array_walk($tags, [$manager, 'persist']);
+
+
+        foreach ($videoGames as $videoGame) {
+            $maxTags = $this->faker->numberBetween(1, 4);
+            for ($i = 0; $i < $maxTags; $i++) {
+                $videoGame->addTag($this->faker->unique()->randomElement($tags));
+            }
+            $this->faker->unique(true); // resets unique to keep all possible tags next game
+        }
+
 
         $reviews = array_fill_callback(0, 100, fn (int $index) => (new Review)
             ->setVideoGame($videoGames[array_rand($videoGames)])

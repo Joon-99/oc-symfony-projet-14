@@ -21,7 +21,7 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
     public function __construct(
         private readonly Generator $faker,
         private readonly CalculateAverageRating $calculateAverageRating,
-        private readonly CountRatingsPerValue $countRatingsPerValue
+        private readonly CountRatingsPerValue $countRatingsPerValue,
     ) {
     }
 
@@ -55,6 +55,20 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
         );
         array_walk($tags, [$manager, 'persist']);
 
+        $reviews = array_fill_callback(0, 100, function (int $index) use ($videoGames, $users): Review {
+            $review = (new Review)
+                ->setUser($users[array_rand($users)])
+                ->setRating(($index % 5) + 1)
+                ->setComment($this->faker->realText(300, 3));
+
+            /** @var VideoGame $randomGame */
+            $randomGame = $videoGames[array_rand($videoGames)];
+            $randomGame->addReview($review);
+
+            return $review;
+        });
+
+        array_walk($reviews, [$manager, 'persist']);
 
         foreach ($videoGames as $videoGame) {
             $maxTags = $this->faker->numberBetween(1, 4);
@@ -62,17 +76,9 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
                 $videoGame->addTag($this->faker->unique()->randomElement($tags));
             }
             $this->faker->unique(true); // resets unique to keep all possible tags next game
+            $this->calculateAverageRating->calculateAverage($videoGame);
+            $this->countRatingsPerValue->countRatingsPerValue($videoGame);
         }
-
-
-        $reviews = array_fill_callback(0, 100, fn (int $index) => (new Review)
-            ->setVideoGame($videoGames[array_rand($videoGames)])
-            ->setUser($users[array_rand($users)])
-            ->setRating(($index % 5) + 1)
-            ->setComment($this->faker->realText(300, 3))
-        );
-
-        array_walk($reviews, [$manager, 'persist']);
 
         $manager->flush();
 

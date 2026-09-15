@@ -239,6 +239,16 @@ class VideoGame
         return $this;
     }
 
+    public function addReview(Review $review): VideoGame
+    {
+        if (!$this->reviews->contains($review)) {
+            $this->reviews->add($review);
+            $review->setVideoGame($this);
+        }
+
+        return $this;
+    }
+
     /**
      * @return Collection<Review>
      */

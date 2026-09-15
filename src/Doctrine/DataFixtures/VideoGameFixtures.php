@@ -3,6 +3,7 @@
 namespace App\Doctrine\DataFixtures;
 
 use App\Model\Entity\User;
+use App\Model\Entity\Review;
 use App\Model\Entity\VideoGame;
 use App\Rating\CalculateAverageRating;
 use App\Rating\CountRatingsPerValue;
@@ -25,8 +26,13 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
 
     public function load(ObjectManager $manager): void
     {
+        // fixed seed to keep data consistent
+        mt_srand(99);
+        $this->faker->seed(99);
+
         $users = $manager->getRepository(User::class)->findAll();
 
+        /** @var VideoGame[] $videoGames */
         $videoGames = array_fill_callback(0, 50, fn (int $index): VideoGame => (new VideoGame)
             ->setTitle(sprintf('Jeu vidéo %d', $index))
             ->setDescription($this->faker->paragraphs(10, true))
@@ -43,7 +49,16 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
 
         $manager->flush();
 
-        // TODO : Ajouter des reviews aux vidéos
+        $reviews = array_fill_callback(0, 100, fn (int $index) => (new Review)
+            ->setVideoGame($videoGames[array_rand($videoGames)])
+            ->setUser($users[array_rand($users)])
+            ->setRating(($index % 5) + 1)
+            ->setComment($this->faker->realText(300, 3))
+        );
+
+        array_walk($reviews, [$manager, 'persist']);
+
+        $manager->flush();
 
     }
 

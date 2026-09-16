@@ -6,7 +6,7 @@ use App\Rating\CalculateAverageRating;
 use App\Rating\RatingHandler;
 use PHPUnit\Framework\TestCase;
 
-class CalculateAverageTest extends TestCase
+class AverageRatingCalculatorTest extends TestCase
 {
     private CalculateAverageRating $averageCalculator;
 

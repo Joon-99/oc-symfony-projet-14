@@ -1,9 +1,10 @@
 <?php
 
-use App\Model\Entity\Review;
-use App\Model\Entity\VideoGame;
+declare(strict_types=1);
+
 use App\Rating\CalculateAverageRating;
 use App\Rating\RatingHandler;
+use App\Tests\Support\VideoGameFactory;
 use PHPUnit\Framework\TestCase;
 
 class AverageRatingCalculatorTest extends TestCase
@@ -21,13 +22,7 @@ class AverageRatingCalculatorTest extends TestCase
      */
     public function testCalculateAverage(array $ratings, ?int $expectedAverage): void
     {
-        $videoGame = new VideoGame();
-
-        foreach ($ratings as $rating) {
-            $review = new Review();
-            $review->setRating($rating);
-            $videoGame->addReview($review);
-        }
+        $videoGame = VideoGameFactory::createWithRatings($ratings);
 
         $this->averageCalculator->calculateAverage($videoGame);
 

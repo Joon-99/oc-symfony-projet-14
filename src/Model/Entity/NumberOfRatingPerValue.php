@@ -83,4 +83,15 @@ class NumberOfRatingPerValue
     {
         ++$this->numberOfFive;
     }
+
+    public function toArray(): array
+    {
+        return [
+            1 => $this->numberOfOne,
+            2 => $this->numberOfTwo,
+            3 => $this->numberOfThree,
+            4 => $this->numberOfFour,
+            5 => $this->numberOfFive,
+        ];
+    }
 }

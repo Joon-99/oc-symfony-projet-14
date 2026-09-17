@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Model\Entity;
 
+use App\Doctrine\Repository\ReviewRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping\Column;
 use Doctrine\ORM\Mapping\Entity;
@@ -11,14 +12,18 @@ use Doctrine\ORM\Mapping\GeneratedValue;
 use Doctrine\ORM\Mapping\Id;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\ManyToOne;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\Range;
 
-#[Entity]
+#[Entity(repositoryClass: ReviewRepository::class)]
 class Review
 {
+    public const COMMENT_MAX_LENGTH = 2000;
+
     #[Id]
     #[GeneratedValue]
-    #[Column]
+    #[Column(type: Types::INTEGER)]
     private ?int $id = null;
 
     #[ManyToOne(targetEntity: VideoGame::class, inversedBy: 'reviews')]
@@ -29,10 +34,12 @@ class Review
     #[JoinColumn(nullable: false)]
     private User $user;
 
+    #[NotBlank]
     #[Range(min: 1, max: 5)]
-    #[Column]
+    #[Column(type: Types::INTEGER)]
     private int $rating;
 
+    #[Length(max: self::COMMENT_MAX_LENGTH)]
     #[Column(type: Types::TEXT, nullable: true)]
     private ?string $comment = null;
 

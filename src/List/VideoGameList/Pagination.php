@@ -63,7 +63,7 @@ final class Pagination implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @return \Traversable<string, int>
+     * @return \Traversable<int, Page>
      */
     public function getIterator(): \Traversable
     {

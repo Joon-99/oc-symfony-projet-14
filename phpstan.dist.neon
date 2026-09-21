@@ -1,0 +1,11 @@
+parameters:
+    level: 6
+    paths:
+        - bin/
+        - config/
+        - public/
+        - src/
+        - tests/
+    symfony:
+        # Used by the phpstan/phpstan-symfony extension
+        containerXmlPath: var/cache/dev/App_KernelDevDebugContainer.xml

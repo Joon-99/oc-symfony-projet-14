@@ -47,6 +47,8 @@ final class FilterTest extends FunctionalTestCase
      * Tests the filtering of video games by tags.
      *
      * @dataProvider tagProvider
+     *
+     * @param array<string> $filterTags
      */
     public function testShouldFilterVideogamesByTag(array $filterTags): void
     {
@@ -80,6 +82,9 @@ final class FilterTest extends FunctionalTestCase
         self::assertSame($expectedTitles, $actualTitles);
     }
 
+    /**
+     * @return array<string, array{0: array<string>}>
+     */
     public function tagProvider(): array
     {
         return [

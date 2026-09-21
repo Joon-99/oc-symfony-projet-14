@@ -9,6 +9,9 @@ use App\Model\Entity\VideoGame;
 
 final class VideoGameFactory
 {
+    /**
+     * @param array<int> $ratings
+     */
     public static function createWithRatings(array $ratings): VideoGame
     {
         $videoGame = new VideoGame();

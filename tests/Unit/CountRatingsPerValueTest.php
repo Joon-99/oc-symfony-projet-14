@@ -20,6 +20,9 @@ class CountRatingsPerValueTest extends TestCase
 
     /**
      * @dataProvider ratingProvider
+     *
+     * @param array<int>      $ratings
+     * @param array<int, int> $expectedCounts
      */
     public function testCountRatingsPerValue(array $ratings, array $expectedCounts): void
     {
@@ -30,6 +33,7 @@ class CountRatingsPerValueTest extends TestCase
         $this->assertSame($expectedCounts, $videoGame->getNumberOfRatingsPerValue()->toArray());
     }
 
+    // TODO A REVOIR
     /**
      * Tests that the count is cleared before calculation.
      */
@@ -71,6 +75,9 @@ class CountRatingsPerValueTest extends TestCase
         );
     }
 
+    /**
+     * @return array<string, array{0: array<int>, 1: array<int, int>}>
+     */
     public function ratingProvider(): array
     {
         return [

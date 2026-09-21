@@ -44,6 +44,9 @@ class NewReviewTest extends FunctionalTestCase
         $this->assertSelectorNotExists('form[name="review"]');
     }
 
+    /**
+     * @return array<string, array{rating: int, comment: string|null}>
+     */
     public function validReviewProvider(): array
     {
         return [
@@ -70,6 +73,9 @@ class NewReviewTest extends FunctionalTestCase
         $this->assertSelectorExists('.is-invalid');
     }
 
+    /**
+     * @return array<string, array{rating: int|string|null, comment: string}>
+     */
     public function reviewInvalidRatingProvider(): array
     {
         return [

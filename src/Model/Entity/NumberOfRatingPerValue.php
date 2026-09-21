@@ -84,6 +84,9 @@ class NumberOfRatingPerValue
         ++$this->numberOfFive;
     }
 
+    /**
+     * @return array<int, int>
+     */
     public function toArray(): array
     {
         return [

@@ -30,6 +30,8 @@ final class RegisterTest extends FunctionalTestCase
 
     /**
      * @dataProvider provideInvalidFormData
+     *
+     * @param array<string, array<array<string, mixed>>> $formData
      */
     public function testThatRegistrationShouldFailed(array $formData): void
     {
@@ -40,6 +42,9 @@ final class RegisterTest extends FunctionalTestCase
         self::assertResponseIsUnprocessable();
     }
 
+    /**
+     * @return iterable<string, array<array<string, mixed>>>
+     */
     public static function provideInvalidFormData(): iterable
     {
         yield 'empty username' => [self::getFormData(['register[username]' => ''])];
@@ -50,6 +55,13 @@ final class RegisterTest extends FunctionalTestCase
         yield 'invalid email' => [self::getFormData(['register[email]' => 'fail'])];
     }
 
+    /**
+     * Returns the default form data for the registration form, optionally overridden by the provided data.
+     *
+     * @param array<string, mixed> $overrideData
+     *
+     * @return array<string, mixed>
+     */
     public static function getFormData(array $overrideData = []): array
     {
         return $overrideData + [

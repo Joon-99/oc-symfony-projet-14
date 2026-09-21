@@ -18,7 +18,7 @@ final readonly class PaginationValueResolver implements ValueResolverInterface
     {
         $argumentType = $argument->getType();
 
-        if ($argumentType !== Pagination::class) {
+        if (Pagination::class !== $argumentType) {
             return [];
         }
 

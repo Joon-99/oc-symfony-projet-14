@@ -55,7 +55,7 @@ final class RegisterTest extends FunctionalTestCase
         return $overrideData + [
             'register[username]' => 'username',
             'register[email]' => 'user@email.com',
-            'register[plainPassword]' => 'SuperPassword123!'
+            'register[plainPassword]' => 'SuperPassword123!',
         ];
     }
 }

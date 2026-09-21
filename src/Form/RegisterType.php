@@ -26,19 +26,19 @@ final class RegisterType extends AbstractType
                 'label' => 'Pseudo',
                 'attr' => [
                     'placeholder' => 'Pseudo',
-                ]
+                ],
             ])
             ->add('email', EmailType::class, [
                 'label' => 'Email',
                 'attr' => [
                     'placeholder' => 'Email',
-                ]
+                ],
             ])
             ->add('plainPassword', PasswordType::class, [
                 'label' => 'Mot de passe',
                 'attr' => [
                     'placeholder' => 'Mot de passe',
-                ]
+                ],
             ]);
     }
 }

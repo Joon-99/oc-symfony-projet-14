@@ -52,11 +52,10 @@ class NewReviewTest extends FunctionalTestCase
         ];
     }
 
-
     /**
      * @dataProvider reviewInvalidRatingProvider
      */
-    public function testInvalidRatingIsRejected(int | string | null $rating, ?string $comment): void
+    public function testInvalidRatingIsRejected(int|string|null $rating, ?string $comment): void
     {
         $crawler = $this->get("/{$this->defaultVideoGameName}");
         $this->assertResponseIsSuccessful();
@@ -80,7 +79,6 @@ class NewReviewTest extends FunctionalTestCase
             'null rating' => ['rating' => null, 'comment' => ''],
         ];
     }
-
 
     public function testCommentAtMaxLengthIsAccepted(): void
     {

@@ -36,7 +36,7 @@ final class VideoGameRepository extends ServiceEntityRepository
                 $pagination->getDirection()->getSql()
             );
 
-        if ($filter->getSearch() !== null) {
+        if (null !== $filter->getSearch()) {
             $queryBuilder
                 ->andWhere(
                     $queryBuilder->expr()->orX(
@@ -45,7 +45,7 @@ final class VideoGameRepository extends ServiceEntityRepository
                         $queryBuilder->expr()->like('vg.test', ':search'),
                     )
                 )
-                ->setParameter('search', '%' . $filter->getSearch() . '%');
+                ->setParameter('search', '%'.$filter->getSearch().'%');
         }
 
         if ([] !== $filter->getTags()) {

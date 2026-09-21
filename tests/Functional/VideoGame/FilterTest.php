@@ -31,7 +31,7 @@ final class FilterTest extends FunctionalTestCase
     }
 
     /**
-     * Tests the search by text functionality
+     * Tests the search by text functionality.
      */
     public function testShouldFilterVideoGamesBySearch(): void
     {
@@ -45,7 +45,7 @@ final class FilterTest extends FunctionalTestCase
 
     /**
      * Tests the filtering of video games by tags.
-     * 
+     *
      * @dataProvider tagProvider
      */
     public function testShouldFilterVideogamesByTag(array $filterTags): void
@@ -106,9 +106,9 @@ final class FilterTest extends FunctionalTestCase
         self::assertSame($initialVideoGameTitles, $consequentVideoGameTitles);
     }
 
-
     /**
      * Extracts the titles of video games from a given crawler.
+     *
      * @return string[]
      */
     private function extractVideoGameTitles(Crawler $crawler): array

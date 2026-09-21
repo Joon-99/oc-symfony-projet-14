@@ -18,7 +18,6 @@ class CountRatingsPerValueTest extends TestCase
         $this->noteCalculator = new RatingHandler();
     }
 
-
     /**
      * @dataProvider ratingProvider
      */
@@ -32,7 +31,7 @@ class CountRatingsPerValueTest extends TestCase
     }
 
     /**
-     * Tests that the count is cleared before calculation
+     * Tests that the count is cleared before calculation.
      */
     public function testCountRatingsPerValueResetsPreviousCounts(): void
     {
@@ -72,7 +71,8 @@ class CountRatingsPerValueTest extends TestCase
         );
     }
 
-    public function ratingProvider(): array {
+    public function ratingProvider(): array
+    {
         return [
             'all ratings' => [
                 [1, 2, 3, 4, 5],

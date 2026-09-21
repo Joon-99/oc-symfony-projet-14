@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Doctrine\Repository;
 
 use App\Model\Entity\Review;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use App\Model\Entity\User;
 use App\Model\Entity\VideoGame;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<Review>

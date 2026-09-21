@@ -17,7 +17,7 @@ class AverageRatingCalculatorTest extends TestCase
         $this->averageCalculator = new RatingHandler();
     }
 
-    /** 
+    /**
      * @dataProvider ratingProvider
      */
     public function testCalculateAverage(array $ratings, ?int $expectedAverage): void
@@ -27,12 +27,11 @@ class AverageRatingCalculatorTest extends TestCase
         $this->averageCalculator->calculateAverage($videoGame);
 
         $this->assertSame($expectedAverage, $videoGame->getAverageRating());
-
     }
 
     // Providers
-    public function ratingProvider(): array {
-
+    public function ratingProvider(): array
+    {
         return [
             'no reviews' => [[], null],
             'one review' => [[4], 4],
@@ -41,7 +40,5 @@ class AverageRatingCalculatorTest extends TestCase
             'minimum rating' => [[1], 1],
             'maximum rating' => [[5], 5],
         ];
-
-
     }
 }

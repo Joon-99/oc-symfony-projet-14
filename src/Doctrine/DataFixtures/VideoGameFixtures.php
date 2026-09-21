@@ -8,13 +8,10 @@ use App\Model\Entity\User;
 use App\Model\Entity\VideoGame;
 use App\Rating\CalculateAverageRating;
 use App\Rating\CountRatingsPerValue;
-use DateTimeImmutable;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Generator;
-
-use function array_fill_callback;
 
 final class VideoGameFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -28,9 +25,9 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
     public function load(ObjectManager $manager): void
     {
         $tagValues = ['Action', 'Adventure', 'RPG', 'Strategy',
-                    'Simulation', 'Sports', 'Puzzle', 'Horror',
-                    'Shooter', 'Platformer', 'Fighting', 'MMO',
-                    'Music', 'TCG', 'Sandbox', 'Stealth'];
+            'Simulation', 'Sports', 'Puzzle', 'Horror',
+            'Shooter', 'Platformer', 'Fighting', 'MMO',
+            'Music', 'TCG', 'Sandbox', 'Stealth'];
 
         // fixed seed to keep data consistent
         mt_srand(99);
@@ -39,10 +36,10 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
         $users = $manager->getRepository(User::class)->findAll();
 
         /** @var VideoGame[] $videoGames */
-        $videoGames = array_fill_callback(0, 50, fn (int $index): VideoGame => (new VideoGame)
+        $videoGames = \array_fill_callback(0, 50, fn (int $index): VideoGame => (new VideoGame())
             ->setTitle(sprintf('Jeu vidéo %d', $index))
             ->setDescription($this->faker->paragraphs(10, true))
-            ->setReleaseDate(new DateTimeImmutable())
+            ->setReleaseDate(new \DateTimeImmutable())
             ->setTest($this->faker->paragraphs(6, true))
             ->setRating(($index % 5) + 1)
             ->setImageName(sprintf('video_game_%d.png', $index))
@@ -50,13 +47,13 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
         );
         array_walk($videoGames, [$manager, 'persist']);
 
-        $tags = array_fill_callback(0, count($tagValues), fn (int $index): Tag => (new Tag)
+        $tags = \array_fill_callback(0, count($tagValues), fn (int $index): Tag => (new Tag())
             ->setName($tagValues[$index])
         );
         array_walk($tags, [$manager, 'persist']);
 
-        $reviews = array_fill_callback(0, 100, function (int $index) use ($videoGames, $users): Review {
-            $review = (new Review)
+        $reviews = \array_fill_callback(0, 100, function (int $index) use ($videoGames, $users): Review {
+            $review = (new Review())
                 ->setUser($users[array_rand($users)])
                 ->setRating(($index % 5) + 1)
                 ->setComment($this->faker->realText(300, 3));
@@ -72,7 +69,7 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
 
         foreach ($videoGames as $videoGame) {
             $maxTags = $this->faker->numberBetween(1, 4);
-            for ($i = 0; $i < $maxTags; $i++) {
+            for ($i = 0; $i < $maxTags; ++$i) {
                 $videoGame->addTag($this->faker->unique()->randomElement($tags));
             }
             $this->faker->unique(true); // resets unique to keep all possible tags next game
@@ -81,7 +78,6 @@ final class VideoGameFixtures extends Fixture implements DependentFixtureInterfa
         }
 
         $manager->flush();
-
     }
 
     public function getDependencies(): array

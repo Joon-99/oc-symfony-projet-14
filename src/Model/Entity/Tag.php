@@ -49,6 +49,7 @@ class Tag
     public function setName(string $name): Tag
     {
         $this->name = $name;
+
         return $this;
     }
 }

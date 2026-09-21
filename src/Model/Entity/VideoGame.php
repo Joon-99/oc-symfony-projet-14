@@ -57,10 +57,10 @@ class VideoGame
     private string $description;
 
     #[Column(type: Types::DATE_IMMUTABLE)]
-    private \DateTimeInterface $releaseDate;
+    private \DateTimeImmutable $releaseDate;
 
     #[Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private \DateTimeImmutable $updatedAt;
+    private ?\DateTimeImmutable $updatedAt = null;
 
     #[Column(type: Types::TEXT, nullable: true)]
     private ?string $test = null;
@@ -168,14 +168,26 @@ class VideoGame
         return $this;
     }
 
-    public function getReleaseDate(): \DateTimeInterface
+    public function getReleaseDate(): \DateTimeImmutable
     {
         return $this->releaseDate;
     }
 
-    public function setReleaseDate(\DateTimeInterface $releaseDate): VideoGame
+    public function setReleaseDate(\DateTimeImmutable $releaseDate): VideoGame
     {
         $this->releaseDate = $releaseDate;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): VideoGame
+    {
+        $this->updatedAt = $updatedAt;
 
         return $this;
     }

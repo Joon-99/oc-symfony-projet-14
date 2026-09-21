@@ -8,7 +8,9 @@ use App\Form\ReviewType;
 use App\List\ListFactory;
 use App\List\VideoGameList\Pagination;
 use App\Model\Entity\Review;
+use App\Model\Entity\User;
 use App\Model\Entity\VideoGame;
+use App\Security\Voter\VideoGameVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -39,9 +41,15 @@ final class VideoGameController extends AbstractController
         $form = $this->createForm(ReviewType::class, $review)->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->denyAccessUnlessGranted('review', $videoGame);
+            $this->denyAccessUnlessGranted(VideoGameVoter::REVIEW, $videoGame);
+
+            $user = $this->getUser();
+            if (!$user instanceof User) {
+                throw new \LogicException('User must be authenticated to leave a review.');
+            }
+
             $review->setVideoGame($videoGame);
-            $review->setUser($this->getUser());
+            $review->setUser($user);
             $entityManager->persist($review);
             $entityManager->flush();
 

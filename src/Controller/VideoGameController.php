@@ -43,10 +43,8 @@ final class VideoGameController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->denyAccessUnlessGranted(VideoGameVoter::REVIEW, $videoGame);
 
+            /** @var User $user */
             $user = $this->getUser();
-            if (!$user instanceof User) {
-                throw new \LogicException('User must be authenticated to leave a review.');
-            }
 
             $review->setVideoGame($videoGame);
             $review->setUser($user);

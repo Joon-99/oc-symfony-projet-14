@@ -25,6 +25,10 @@
         <include>
             <directory suffix=".php">src</directory>
         </include>
+        <exclude>
+            <directory suffix=".php">src/Doctrine/DataFixtures</directory>
+            <file>src/Faker/FrenchGeneratorFactory.php</file>
+        </exclude>
     </coverage>
 
     <listeners>

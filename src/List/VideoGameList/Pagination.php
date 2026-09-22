@@ -8,10 +8,9 @@ use App\Model\ValueObject\Direction;
 use App\Model\ValueObject\Info;
 use App\Model\ValueObject\Page;
 use App\Model\ValueObject\Sorting;
-use IteratorAggregate;
 
 /**
- * @implements IteratorAggregate<Page>
+ * @implements \IteratorAggregate<Page>
  */
 final class Pagination implements \IteratorAggregate, \Countable
 {

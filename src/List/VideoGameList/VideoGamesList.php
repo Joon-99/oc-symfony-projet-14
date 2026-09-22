@@ -9,14 +9,13 @@ use App\Form\FilterType;
 use App\Model\Entity\VideoGame;
 use App\Model\ValueObject\Page;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use IteratorAggregate;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormView;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
- * @implements IteratorAggregate<VideoGame>
+ * @implements \IteratorAggregate<VideoGame>
  */
 final class VideoGamesList implements \Countable, \IteratorAggregate
 {

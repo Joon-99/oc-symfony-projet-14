@@ -3,6 +3,11 @@ name: CI
 on:
   push:
     branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+permissions:
+  contents: read
 
 jobs:
   tests:
@@ -17,6 +22,7 @@ jobs:
           POSTGRES_DB: criti-pixel
         ports:
           - 5432:5432
+        # Waiting for the PostgreSQL service to be healthy
         options: >-
           --health-cmd="pg_isready -U postgres"
           --health-interval=10s
@@ -30,31 +36,15 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - name: Setup PHP and install composer dependencies
+        uses: ./.github/actions/setup-php-composer
         with:
-          php-version: '8.2'
-          extensions: ctype, iconv, pgsql, pdo_pgsql, intl, mbstring
           coverage: pcov
-          tools: composer:v2
-
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
-
-      - name: Cache composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - name: Install dependencies
-        run: composer install --no-interaction --no-progress --prefer-dist
 
       - name: Build sass assets
         run: php bin/console sass:build
 
+      # truncate for faster deletion
       - name: Set up test database
         run: |
           php bin/console doctrine:database:create --env=test --if-not-exists
@@ -64,6 +54,7 @@ jobs:
       - name: Run test suite
         run: php bin/phpunit --coverage-text
 
+
   static-analysis:
     runs-on: ubuntu-latest
 
@@ -71,29 +62,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: '8.2'
-          extensions: ctype, iconv, pgsql, pdo_pgsql, intl, mbstring
-          coverage: none
-          tools: composer:v2
+      - name: Setup PHP and install composer dependencies
+        uses: ./.github/actions/setup-php-composer
 
-      - name: Get composer cache directory
-        id: composer-cache
-        run: echo "dir=$(composer config cache-files-dir)" >> "$GITHUB_OUTPUT"
-
-      - name: Cache composer dependencies
-        uses: actions/cache@v4
-        with:
-          path: ${{ steps.composer-cache.outputs.dir }}
-          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: ${{ runner.os }}-composer-
-
-      - name: Install dependencies
-        run: composer install --no-interaction --no-progress --prefer-dist
-
-      - name: Warm up dev container (required by phpstan-symfony)
+      - name: Warm up dev cache (required by phpstan-symfony to use containerXmlPath)
         run: php bin/console cache:warmup --env=dev
 
       - name: Run PHPStan

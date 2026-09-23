@@ -52,6 +52,9 @@ jobs:
       - name: Install dependencies
         run: composer install --no-interaction --no-progress --prefer-dist
 
+      - name: Build sass assets
+        run: php bin/console sass:build
+
       - name: Set up test database
         run: |
           php bin/console doctrine:database:create --env=test --if-not-exists

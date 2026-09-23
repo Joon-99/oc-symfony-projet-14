@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Model\Entity\NumberOfRatingsPerValue;
 use App\Model\Entity\Review;
 use App\Rating\CountRatingsPerValue;
 use App\Rating\RatingHandler;
@@ -33,9 +34,8 @@ class CountRatingsPerValueTest extends TestCase
         $this->assertSame($expectedCounts, $videoGame->getNumberOfRatingsPerValue()->toArray());
     }
 
-    // TODO A REVOIR
     /**
-     * Tests that the count is cleared before calculation.
+     * Tests that the internal count of the entity @see NumberOfRatingsPerValue is reset before calculation.
      */
     public function testCountRatingsPerValueResetsPreviousCounts(): void
     {

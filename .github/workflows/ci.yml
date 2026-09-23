@@ -100,4 +100,4 @@ jobs:
         run: vendor/bin/phpstan analyse --no-progress
 
       - name: Run PHP CS Fixer
-        run: vendor/bin/php-cs-fixer check --diff
+        run: vendor/bin/php-cs-fixer check --diff -v

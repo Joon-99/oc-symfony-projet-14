@@ -20,9 +20,3 @@ function array_fill_callback(int $startIndex, int $count, callable $callback): a
 
     return $data;
 }
-
-// phpstan level 6 test: missing parameter and return typehints
-function shouldFailPHPStanLevel6($value)
-{
-    return $value;
-}

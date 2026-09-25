@@ -8,6 +8,12 @@ on:
 
 permissions:
   contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   tests:
@@ -52,7 +58,20 @@ jobs:
           php bin/console doctrine:fixtures:load --env=test --no-interaction --purge-with-truncate
 
       - name: Run test suite
-        run: php bin/phpunit --coverage-text
+        run: php bin/phpunit --coverage-html ./coverage
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './coverage'
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v5
+
 
 
   static-analysis:
